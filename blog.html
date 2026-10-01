@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>وبلاگ من</title>
+  <meta
+    name="description"
+    content="یادداشت‌ها، تجربه‌ها و چیزهایی که در مسیر یادگیری می‌آموزم."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #eef2f1;
+      --ink: #14262b;
+      --muted: #4f6468;
+      --accent: #1f6f78;
+      --mark: #e9b949;
+      --line: #c9d6d5;
+
+      box-sizing: border-box;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f1c20;
+      --ink: #e6eeee;
+      --muted: #9bb0b3;
+      --accent: #6cc3cc;
+      --mark: #e9b949;
+      --line: #254148;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1c20;
+        --ink: #e6eeee;
+        --muted: #9bb0b3;
+        --accent: #6cc3cc;
+        --mark: #e9b949;
+        --line: #254148;
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding:
+        env(safe-area-inset-top, 0px)
+        env(safe-area-inset-right, 0px)
+        env(safe-area-inset-bottom, 0px)
+        env(safe-area-inset-left, 0px);
+
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      font-size: 17px;
+      line-height: 2;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(100% - 40px, 680px);
+      margin-inline: auto;
+    }
+
+    .site-header {
+      padding: 56px 0 32px;
+      border-bottom: 3px solid var(--mark);
+    }
+
+    .site-title {
+      margin: 0 0 8px;
+      font-size: clamp(2.4rem, 9vw, 4rem);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .site-description {
+      max-width: 34em;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-nav a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .site-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .section-title {
+      margin: 48px 0 8px;
+      font-size: 1.5rem;
+    }
+
+    .post {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .post-title {
+      cursor: pointer;
+      list-style: none;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .post-title::-webkit-details-marker {
+      display: none;
+    }
+
+    .post-title::before {
+      content: "＋";
+      display: inline-block;
+      margin-inline-end: 8px;
+      color: var(--accent);
+    }
+
+    .post[open] .post-title::before {
+      content: "−";
+    }
+
+    .post-date {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+
+    .post-content {
+      max-width: 36em;
+      margin: 8px 0 4px;
+    }
+
+    .site-footer {
+      padding: 48px 0 64px;
+      color: var(--muted);
+    }
+
+    .site-footer .section-title {
+      margin-top: 0;
+    }
+
+    .email {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        font-size: 16px;
+      }
+
+      .container {
+        width: min(100% - 28px, 680px);
+      }
+
+      .site-header {
+        padding-top: 40px;
+      }
+
+      .site-nav {
+        gap: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header class="site-header">
+      <h1 class="site-title">وبلاگ من</h1>
+
+      <p class="site-description">
+        یادداشت‌ها، تجربه‌ها و چیزهایی که در مسیر یادگیری می‌آموزم.
+      </p>
+    </header>
+
+    <nav class="site-nav" aria-label="منوی اصلی">
+      <a href="#posts">نوشته‌ها</a>
+      <a href="#about">درباره‌ی من</a>
+      <a href="#contact">تماس</a>
+    </nav>
+
+    <main>
+      <section id="posts" aria-labelledby="posts-title">
+        <h2 id="posts-title" class="section-title">آخرین نوشته‌ها</h2>
+      </section>
+
+      <section id="about" aria-labelledby="about-title">
+        <h2 id="about-title" class="section-title">درباره‌ی من</h2>
+
+        <p>
+          به نرم‌افزارهای آزاد و توسعه‌ی پروژه‌های متن‌باز علاقه‌مندم.
+        </p>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+      <h2 class="section-title">ارتباط</h2>
+
+      <p>
+        برای گفتگو می‌توانید به نشانی
+        <a class="email" href="mailto:SMHO11@protonmail.com">
+          SMHO11@protonmail.com
+        </a>
+        ایمیل بزنید.
+      </p>
+    </footer>
+
+  </div>
+</body>
+</html>
