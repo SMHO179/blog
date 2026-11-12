@@ -3,16 +3,16 @@
  * رنگ‌ها، تایپوگرافی، چیدمان راست‌به‌چپ، حالت تاریک و واکنش‌گرایی.
  */
 
-/* ── رنگ‌ها: حالت روشن ── */
+/* ── رنگ‌ها: حالت تاریک ── */
 
 :root {
-  --bg: #FAF9F6;
-  --surface: #F1EFE9;
-  --ink: #252525;
-  --muted: #77736C;
-  --accent: #526B55;
-  --accent-hover: #3D4F3F;
-  --line: #E7E3DB;
+  --bg: #121416;
+  --surface: #1B1F22;
+  --ink: #E8E8E8;
+  --muted: #92999E;
+  --accent: #8BBF9F;
+  --accent-hover: #A8D4B8;
+  --line: #292E32;
 
   --radius-sm: 6px;
   --radius: 8px;
@@ -25,50 +25,13 @@
   --fs-base: 17px;
   --lh-base: 1.75;
 
-  --hl-keyword: #526B55;
-  --hl-string: #8A9A77;
-  --hl-title: #252525;
-  --hl-comment: #77736C;
-  --hl-number: #526B55;
-
-  box-sizing: border-box;
-}
-
-/* ── رنگ‌ها: حالت تاریک ── */
-
-:root[data-theme="dark"] {
-  --bg: #121416;
-  --surface: #1B1F22;
-  --ink: #E8E8E8;
-  --muted: #92999E;
-  --accent: #8BBF9F;
-  --accent-hover: #A8D4B8;
-  --line: #292E32;
-
   --hl-keyword: #8BBF9F;
   --hl-string: #A7C9AD;
   --hl-title: #E8E8E8;
   --hl-comment: #92999E;
   --hl-number: #8BBF9F;
-}
 
-/* A saved data-theme (applied by JavaScript) wins over the system-preference fallback below. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121416;
-    --surface: #1B1F22;
-    --ink: #E8E8E8;
-    --muted: #92999E;
-    --accent: #8BBF9F;
-    --accent-hover: #A8D4B8;
-    --line: #292E32;
-
-    --hl-keyword: #8BBF9F;
-    --hl-string: #A7C9AD;
-    --hl-title: #E8E8E8;
-    --hl-comment: #92999E;
-    --hl-number: #8BBF9F;
-  }
+  box-sizing: border-box;
 }
 
 *,
@@ -150,26 +113,6 @@ p.site-title a {
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.6;
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.theme-toggle:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 /* ── ناوبری ── */

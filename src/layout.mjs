@@ -49,8 +49,7 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="theme-color" content="#FAF9F6" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#121416">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
