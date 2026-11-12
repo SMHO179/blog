@@ -3,6 +3,14 @@
  * رنگ‌ها، تایپوگرافی، چیدمان راست‌به‌چپ، حالت تاریک و واکنش‌گرایی.
  */
 
+@font-face {
+  font-family: 'AradVF';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url('/fonts/AradVF.woff2') format('woff2');
+  font-display: swap;
+}
+
 /* ── رنگ‌ها: حالت تاریک ── */
 
 :root {
@@ -18,8 +26,8 @@
   --radius: 8px;
   --radius-lg: 10px;
 
-  --font-heading: "Esteadat", Vazirmatn, Tahoma, sans-serif;
-  --font-body: "Vazirmatn", Tahoma, sans-serif;
+  --font-heading: "AradVF", "Arad", Vazirmatn, Tahoma, sans-serif;
+  --font-body: "AradVF", "Arad", Vazirmatn, Tahoma, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
 
   --fs-base: 17px;
@@ -53,6 +61,7 @@ body {
     env(safe-area-inset-bottom, 0px)
     env(safe-area-inset-left, 0px);
 
+  direction: rtl;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
