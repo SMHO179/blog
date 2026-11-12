@@ -1,10 +1,3 @@
-/**
- * پیکربندی marked برای رندر مارک‌داون:
- * - برجسته‌سازی کد با highlight.js (زبان مشخص یا تشخیص خودکار)
- * - بلوک‌های کد همیشه راست‌به‌چپ‌ناپذیر (dir="ltr") داخل صفحه‌ی راست‌به‌چپ
- * - تصاویر با بارگذاری تنبل و decoding غیرمسدودکننده
- */
-
 import { Marked } from 'marked';
 import hljs from 'highlight.js';
 import { escapeHtml } from './utils.mjs';
@@ -39,7 +32,6 @@ marked.use({
   },
 });
 
-/** رندر متن مارک‌داون به HTML. */
 export function renderMarkdown(source) {
   return marked.parse(source);
 }

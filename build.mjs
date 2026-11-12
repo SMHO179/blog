@@ -1,12 +1,3 @@
-/**
- * اسکریپت ساخت (build):
- * ۱) همه‌ی فایل‌های مارک‌داون پوشه‌ی posts/ خوانده و اعتبارسنجی می‌شوند.
- * ۲) هر نوشته به HTML رندر و در dist/posts/<slug>/index.html نوشته می‌شود.
- * ۳) صفحه‌ی اصلی، صفحه‌ی ۴۰۴، sitemap و robots تولید و پوشه‌ی public کپی می‌شود.
- *
- * خروجی کامل ایستاست و بدون هیچ وابستگی زمان اجرا روی Vercel سرو می‌شود.
- */
-
 import { mkdir, rm, readdir, readFile, writeFile, cp } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,7 +10,6 @@ const POSTS_DIR = path.join(ROOT, 'posts');
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const DIST_DIR = path.join(ROOT, 'dist');
 
-/** نشانی پایه‌ی سایت: از SITE_URL یا متغیرهای محیطی Vercel خوانده می‌شود. */
 function resolveSiteUrl() {
   const raw = process.env.SITE_URL
     || (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`)
@@ -28,7 +18,6 @@ function resolveSiteUrl() {
   return raw.replace(/\/+$/, '');
 }
 
-/** نامک (slug) باید برای ساخت پوشه و URL امن باشد. */
 function validateSlug(slug, file) {
   if (!slug || slug === '.' || slug === '..' || /[\\/:*?"<>|\s]/.test(slug)) {
     throw new Error(
@@ -38,7 +27,6 @@ function validateSlug(slug, file) {
   }
 }
 
-/** خواندن و اعتبارسنجی همه‌ی نوشته‌ها، مرتب‌شده از جدیدترین به قدیمی‌ترین. */
 async function loadPosts() {
   let files;
   try {
@@ -61,7 +49,6 @@ async function loadPosts() {
       throw new Error(`خطا در خواندن frontmatter «${file}»: ${err.message}`);
     }
 
-    // پیش‌نویس‌ها در خروجی ساخته نمی‌شوند.
     if (data.draft === true) {
       continue;
     }

@@ -1,15 +1,3 @@
-/**
- * سرور ایستای صفر-وابستگی برای پیش‌نمایش محلی:
- * - سرو پوشه‌ی dist/ با URLهای تمیز (پشتیبانی از /posts/<slug>/)
- * - هدایت دایرکتوری‌های بدون اسلش پایانی (هم‌رفتار با Vercel)
- * - سرو dist/404.html با کد وضعیت 404
- *
- * حالت توسعه (node server.mjs --dev):
- * - پیش از شروع، یک‌بار build می‌گیرد
- * - روی posts/، src/ و public/ گوش می‌دهد و با هر تغییر دوباره build می‌گیرد
- * - با SSE مرورگر را خودکار تازه می‌کند (بدون هیچ وابستگی npm)
- */
-
 import { createServer } from 'node:http';
 import { stat, readFile } from 'node:fs/promises';
 import { watch } from 'node:fs';
@@ -50,7 +38,6 @@ function runBuild() {
   });
 }
 
-/** تشخیص فایل برای یک مسیر URL؛ با پشتیبانی از index.html و مسیرهای تمیز. */
 async function resolveTarget(rawPathname) {
   let pathname;
   try {
@@ -67,7 +54,7 @@ async function resolveTarget(rawPathname) {
     return null;
   }
 
-  // هم‌رفتار با trailingSlash: true روی Vercel
+  
   if (!pathname.endsWith('/')) {
     try {
       const info = await stat(abs);
@@ -75,7 +62,7 @@ async function resolveTarget(rawPathname) {
         return { redirect: `${pathname}/` };
       }
     } catch {
-      // مسیر دایرکتوری نیست؛ در ادامه به‌عنوان فایل بررسی می‌شود.
+      
     }
   }
 
@@ -90,7 +77,7 @@ async function resolveTarget(rawPathname) {
         return { file: candidate };
       }
     } catch {
-      // این گزینه وجود ندارد؛ گزینه‌ی بعدی.
+      
     }
   }
 

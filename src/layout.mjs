@@ -1,15 +1,6 @@
-/**
- * قالب‌های صفحه: چیدمان مشترک (سرصفحه، ناوبری، پابرگ)، صفحه‌ی اصلی،
- * صفحه‌ی نوشته و صفحه‌ی ۴۰۴.
- *
- * ساختار و ظاهر دقیقاً از index.html اصلی حفظ شده است؛
- * فقط بخش محتوایی بسته به نوع صفحه عوض می‌شود.
- */
-
 import { escapeHtml, excerptFromHtml } from './lib/utils.mjs';
 import { formatJalaliDate, toIsoDate } from './lib/dates.mjs';
 
-/** قالب مشترک همه‌ی صفحه‌ها. */
 export function layout({
   site,
   pageTitle,
@@ -24,7 +15,7 @@ export function layout({
     ? `      <h1 class="site-title">${escapeHtml(site.title)}</h1>`
     : `      <p class="site-title"><a href="/">${escapeHtml(site.title)}</a></p>`;
 
-  // در صفحه‌ی اصلی لینک‌های ناوبری به لنگرهای همین صفحه اشاره می‌کنند.
+  
   const navPrefix = isHome ? '' : '/';
   const canonicalTags = canonical
     ? `  <link rel="canonical" href="${escapeHtml(canonical)}">\n  <meta property="og:url" content="${escapeHtml(canonical)}">\n`
@@ -100,7 +91,6 @@ ${content}
 `;
 }
 
-/** لیست برچسب‌ها (درباره‌ی کارت نوشته یا سربرگ صفحه‌ی نوشته). */
 function tagsMarkup(post) {
   if (!post.tags.length) {
     return '';
@@ -109,7 +99,6 @@ function tagsMarkup(post) {
   return `\n        <ul class="post-tags" aria-label="برچسب‌های نوشته">\n${items}\n        </ul>`;
 }
 
-/** صفحه‌ی اصلی: فهرست همه‌ی نوشته‌ها به شکل کارت‌های بازشو. */
 export function renderHome({ site, posts, siteUrl }) {
   let postsSection;
 
@@ -158,7 +147,6 @@ ${postsSection}
   });
 }
 
-/** صفحه‌ی اختصاصی هر نوشته. */
 export function renderPost({ site, post, siteUrl }) {
   const url = `${siteUrl}/posts/${post.slugUri}/`;
   const description = post.description || excerptFromHtml(post.html);
@@ -204,7 +192,6 @@ ${post.html}
   });
 }
 
-/** صفحه‌ی ۴۰۴ (روی Vercel به‌طور خودکار برای مسیرهای ناموجود سرو می‌شود). */
 export function renderNotFound({ site }) {
   return layout({
     site,

@@ -1,11 +1,3 @@
-/**
- * تاریخ‌ها: تبدیل میلادی به شمسی با الگوریتم استاندارد jalaali-js
- * (بدون وابستگی خارجی) و قالب‌بندی با رقم‌های فارسی.
- *
- * تاریخ‌های frontmatter (مثل 2026-10-05) به‌صورت تاریخ تقویمی در UTC
- * در نظر گرفته می‌شوند تا نمایش، در هر منطقه‌ی زمانی یکسان بماند.
- */
-
 const BREAKS = [
   -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
   1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178,
@@ -26,7 +18,6 @@ function mod(a, b) {
   return a - ~~(a / b) * b;
 }
 
-/** محاسبه‌ی سال کبیسه و روز اول اسفند برای سال شمسی. */
 function jalCal(jy) {
   const breaksLength = BREAKS.length;
   const gy = jy + 621;
@@ -68,7 +59,6 @@ function jalCal(jy) {
   return { leap, gy, march };
 }
 
-/** تبدیل تاریخ میلادی به شماره‌ی روز ژولینی. */
 function g2d(gy, gm, gd) {
   let d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4)
     + div(153 * mod(gm + 9, 12) + 2, 5)
@@ -77,7 +67,6 @@ function g2d(gy, gm, gd) {
   return d;
 }
 
-/** تبدیل شماره‌ی روز ژولینی به تاریخ میلادی. */
 function d2g(jdn) {
   let j = 4 * jdn + 139361631;
   j += div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
@@ -88,7 +77,6 @@ function d2g(jdn) {
   return { gy, gm, gd };
 }
 
-/** تبدیل شماره‌ی روز ژولینی به تاریخ شمسی. */
 function d2j(jdn) {
   const gy = d2g(jdn).gy;
   let jy = gy - 621;
@@ -116,18 +104,15 @@ export function toPersianDigits(value) {
   return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[Number(d)]);
 }
 
-/** تبدیل شیء Date (میلادی) به تاریخ شمسی. */
 export function toJalali(date) {
   return d2j(g2d(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()));
 }
 
-/** قالب «۱۳ مهر ۱۴۰۵» برای نمایش در صفحه. */
 export function formatJalaliDate(date) {
   const { jy, jm, jd } = toJalali(date);
   return `${toPersianDigits(jd)} ${MONTHS[jm - 1]} ${toPersianDigits(jy)}`;
 }
 
-/** تاریخ ماشین‌خوان (YYYY-MM-DD) برای ویژگی datetime و متادیتای سئو. */
 export function toIsoDate(date) {
   return date.toISOString().slice(0, 10);
 }

@@ -1,8 +1,3 @@
-﻿/*
- * وبلاگ شخصی — سیستم طراحی «Minimal Editorial + Warm Minimal»
- * رنگ‌ها، تایپوگرافی، چیدمان راست‌به‌چپ، حالت تاریک و واکنش‌گرایی.
- */
-
 @font-face {
   font-family: 'AradVF';
   font-style: normal;
@@ -11,7 +6,7 @@
   font-display: swap;
 }
 
-/* ── رنگ‌ها: حالت تاریک ── */
+
 
 :root {
   --bg: #121416;
@@ -90,7 +85,7 @@ button:focus-visible {
   margin-inline: auto;
 }
 
-/* ── سرصفحه ── */
+
 
 .site-header {
   padding: 40px 0 20px;
@@ -124,7 +119,7 @@ p.site-title a {
   line-height: 1.6;
 }
 
-/* ── ناوبری ── */
+
 
 .site-nav {
   display: flex;
@@ -143,7 +138,7 @@ p.site-title a {
   color: var(--accent);
 }
 
-/* ── بخش‌ها ── */
+
 
 .section-title {
   margin: 60px 0 16px;
@@ -154,7 +149,7 @@ p.site-title a {
   color: var(--ink);
 }
 
-/* ── لیست نوشته‌ها (خانه) ── */
+
 
 .post {
   padding: 26px 0;
@@ -238,7 +233,7 @@ p.site-title a {
   font-size: 1.05rem;
 }
 
-/* ── صفحه‌ی نوشته ── */
+
 
 .post-page {
   padding: 36px 0 24px;
@@ -290,7 +285,7 @@ p.site-title a {
   text-align: center;
 }
 
-/* ── تایپوگرافی محتوای مارک‌داون ── */
+
 
 .post-content h2,
 .post-content h3,
@@ -402,7 +397,7 @@ p.site-title a {
   color: var(--ink);
 }
 
-/* ── کد: درون‌خطی و بلوک (همیشه چپ‌به‌راست) ── */
+
 
 .post-content code {
   font-family: var(--font-mono);
@@ -443,7 +438,7 @@ p.site-title a {
   font-size: 1em;
 }
 
-/* برجسته‌سازی کد (highlight.js) — رنگ‌های هماهنگ با پالت سایت */
+
 
 .hljs-comment,
 .hljs-quote {
@@ -491,7 +486,7 @@ p.site-title a {
   font-weight: 700;
 }
 
-/* ── دکمه‌ی کپی کد ── */
+
 
 .copy-btn {
   position: absolute;
@@ -520,7 +515,7 @@ p.site-title a {
   opacity: 1;
 }
 
-/* ── پاسخ‌گویی ── */
+
 
 @media (max-width: 600px) {
   body {
