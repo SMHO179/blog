@@ -31,7 +31,7 @@ export function layout({
     : '';
 
   return `<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -52,17 +52,6 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="theme-color" content="#FAF9F6" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
 
-  <!-- theme applied before render to avoid a flash of wrong colors -->
-  <script>
-    (function () {
-      var key = 'blog-theme', html = document.documentElement, saved;
-      try { saved = localStorage.getItem(key); } catch (e) { saved = null; }
-      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -82,8 +71,6 @@ ${siteTitle}
       <p class="site-description">
         ${escapeHtml(site.description)}
       </p>
-
-      <button class="theme-toggle" id="theme-toggle" aria-label="تغییر حالت نمایش" aria-pressed="false">تاریک</button>
     </header>
 
     <nav class="site-nav" aria-label="منوی اصلی">
