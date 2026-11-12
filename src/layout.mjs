@@ -49,13 +49,24 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="theme-color" content="#eef2f1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0f1c20" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FAF9F6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+
+  <!-- theme applied before render to avoid a flash of wrong colors -->
+  <script>
+    (function () {
+      var key = 'blog-theme', html = document.documentElement, saved;
+      try { saved = localStorage.getItem(key); } catch (e) { saved = null; }
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Esteadat:wght@700&family=JetBrains+Mono:wght@400;500&family=Vazirmatn:wght@400;500;700&display=swap"
     rel="stylesheet"
   >
   <link rel="stylesheet" href="/css/style.css">
@@ -71,6 +82,8 @@ ${siteTitle}
       <p class="site-description">
         ${escapeHtml(site.description)}
       </p>
+
+      <button class="theme-toggle" id="theme-toggle" aria-label="تغییر حالت نمایش" aria-pressed="false">تاریک</button>
     </header>
 
     <nav class="site-nav" aria-label="منوی اصلی">

@@ -1,41 +1,73 @@
-/*
- * وبلاگ من — استایل اصلی
- *
- * بخش نخست عیناً از index.html اولیه منتقل شده است (هویت بصری دست‌نخورده):
- * رنگ‌ها، تایپوگرافی وزیرمتن، چیدمان راست‌به‌چپ، حالت تاریک و واکنش‌گرایی.
- *
- * بخش‌های افزوده‌شده در انتهای فایل: صفحه‌ی نوشته، تایپوگرافی مارک‌داون،
- * برجسته‌سازی کد (هماهنگ با پالت موجود) و دکمه‌ی کپی.
+﻿/*
+ * وبلاگ شخصی — سیستم طراحی «Minimal Editorial + Warm Minimal»
+ * رنگ‌ها، تایپوگرافی، چیدمان راست‌به‌چپ، حالت تاریک و واکنش‌گرایی.
  */
 
+/* ── رنگ‌ها: حالت روشن ── */
+
 :root {
-  --bg: #eef2f1;
-  --ink: #14262b;
-  --muted: #4f6468;
-  --accent: #1f6f78;
-  --mark: #e9b949;
-  --line: #c9d6d5;
+  --bg: #FAF9F6;
+  --surface: #F1EFE9;
+  --ink: #252525;
+  --muted: #77736C;
+  --accent: #526B55;
+  --accent-hover: #3D4F3F;
+  --line: #E7E3DB;
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 10px;
+
+  --font-heading: "Esteadat", Vazirmatn, Tahoma, sans-serif;
+  --font-body: "Vazirmatn", Tahoma, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --fs-base: 17px;
+  --lh-base: 1.75;
+
+  --hl-keyword: #526B55;
+  --hl-string: #8A9A77;
+  --hl-title: #252525;
+  --hl-comment: #77736C;
+  --hl-number: #526B55;
 
   box-sizing: border-box;
 }
 
+/* ── رنگ‌ها: حالت تاریک ── */
+
 :root[data-theme="dark"] {
-  --bg: #0f1c20;
-  --ink: #e6eeee;
-  --muted: #9bb0b3;
-  --accent: #6cc3cc;
-  --mark: #e9b949;
-  --line: #254148;
+  --bg: #121416;
+  --surface: #1B1F22;
+  --ink: #E8E8E8;
+  --muted: #92999E;
+  --accent: #8BBF9F;
+  --accent-hover: #A8D4B8;
+  --line: #292E32;
+
+  --hl-keyword: #8BBF9F;
+  --hl-string: #A7C9AD;
+  --hl-title: #E8E8E8;
+  --hl-comment: #92999E;
+  --hl-number: #8BBF9F;
 }
 
+/* A saved data-theme (applied by JavaScript) wins over the system-preference fallback below. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1c20;
-    --ink: #e6eeee;
-    --muted: #9bb0b3;
-    --accent: #6cc3cc;
-    --mark: #e9b949;
-    --line: #254148;
+    --bg: #121416;
+    --surface: #1B1F22;
+    --ink: #E8E8E8;
+    --muted: #92999E;
+    --accent: #8BBF9F;
+    --accent-hover: #A8D4B8;
+    --line: #292E32;
+
+    --hl-keyword: #8BBF9F;
+    --hl-string: #A7C9AD;
+    --hl-title: #E8E8E8;
+    --hl-comment: #92999E;
+    --hl-number: #8BBF9F;
   }
 }
 
@@ -60,75 +92,140 @@ body {
 
   background: var(--bg);
   color: var(--ink);
-  font-family: "Vazirmatn", Tahoma, sans-serif;
-  font-size: 17px;
-  line-height: 2;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
 }
 
 a {
   color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 a:focus-visible,
-summary:focus-visible {
+summary:focus-visible,
+button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 
 .container {
-  width: min(100% - 40px, 680px);
+  width: min(100% - 40px, 760px);
   margin-inline: auto;
 }
 
+/* ── سرصفحه ── */
+
 .site-header {
-  padding: 56px 0 32px;
-  border-bottom: 3px solid var(--mark);
+  padding: 40px 0 20px;
+  border-bottom: 1px solid var(--line);
 }
 
 .site-title {
-  margin: 0 0 8px;
-  font-size: clamp(2.4rem, 9vw, 4rem);
-  font-weight: 800;
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 8vw, 2.8rem);
+  font-weight: 700;
   line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+p.site-title {
+  margin: 0 0 10px;
+}
+
+p.site-title a {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .site-description {
   max-width: 34em;
-  margin: 0;
+  margin: 0 0 16px;
   color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── ناوبری ── */
 
 .site-nav {
   display: flex;
-  gap: 20px;
-  padding: 16px 0;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .site-nav a {
-  font-weight: 700;
-  text-decoration: none;
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .site-nav a:hover {
-  text-decoration: underline;
+  color: var(--accent);
 }
+
+/* ── بخش‌ها ── */
 
 .section-title {
-  margin: 48px 0 8px;
-  font-size: 1.5rem;
+  margin: 60px 0 16px;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
+/* ── لیست نوشته‌ها (خانه) ── */
+
 .post {
-  padding: 14px 0;
+  padding: 26px 0;
   border-bottom: 1px solid var(--line);
+}
+
+.post:last-child {
+  border-bottom: none;
+}
+
+.post:hover {
+  background: var(--surface);
 }
 
 .post-title {
   cursor: pointer;
-  list-style: none;
-  font-size: 1.15rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 1.3rem;
   font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink);
 }
 
 .post-title::-webkit-details-marker {
@@ -136,167 +233,109 @@ summary:focus-visible {
 }
 
 .post-title::before {
-  content: "＋";
+  content: "▾";
   display: inline-block;
   margin-inline-end: 8px;
+  font-size: 0.9em;
   color: var(--accent);
+  line-height: 1;
 }
 
 .post[open] .post-title::before {
-  content: "−";
+  content: "▴";
 }
 
-.post-date {
-  display: block;
+.post .post-date {
+  margin-inline-start: auto;
   color: var(--muted);
   font-size: 0.9rem;
-  font-weight: 300;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
 .post-content {
-  max-width: 36em;
-  margin: 8px 0 4px;
+  margin: 10px 0 4px;
+  max-width: 42em;
 }
 
-.site-footer {
-  padding: 48px 0 64px;
+.post-content p {
+  margin: 6px 0;
+}
+
+.post .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post .post-tags li {
+  border: 1px solid var(--line);
+  background: var(--surface);
   color: var(--muted);
+  padding: 2px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 400;
 }
 
-.site-footer .section-title {
-  margin-top: 0;
-}
-
-.email {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-
-@media (max-width: 600px) {
-  body {
-    font-size: 16px;
-  }
-
-  .container {
-    width: min(100% - 28px, 680px);
-  }
-
-  .site-header {
-    padding-top: 40px;
-  }
-
-  .site-nav {
-    gap: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────
- * بخش‌های افزوده‌شده برای پشتیبانی از مارک‌داون و صفحه‌ی نوشته.
- * رنگ‌های تازه همگی از پالت موجود (فیروزه‌ای، طلایی، مرکب) مشتق شده‌اند
- * و در هر دو حالت روشن و تاریک هماهنگ می‌مانند.
- * ───────────────────────────────────────────────────────────── */
-
-:root {
-  --code-bg: #e2e9e8;
-  --hl-keyword: #1f6f78;
-  --hl-string: #8a6a14;
-  --hl-title: #155e66;
-}
-
-:root[data-theme="dark"] {
-  --code-bg: #132226;
-  --hl-keyword: #6cc3cc;
-  --hl-string: #e9b949;
-  --hl-title: #a5dde3;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --code-bg: #132226;
-    --hl-keyword: #6cc3cc;
-    --hl-string: #e9b949;
-    --hl-title: #a5dde3;
-  }
-}
-
-/* لینک عنوان سایت در صفحه‌های فرعی (نوشته و ۴۰۴) */
-p.site-title {
-  margin: 0 0 8px;
-}
-
-p.site-title a {
-  color: inherit;
-  text-decoration: none;
-  font-size: clamp(2.4rem, 9vw, 4rem);
-  font-weight: 800;
-  line-height: 1.3;
+.empty-posts {
+  color: var(--muted);
+  font-size: 1.05rem;
 }
 
 /* ── صفحه‌ی نوشته ── */
 
 .post-page {
-  padding: 40px 0 24px;
+  padding: 36px 0 24px;
 }
 
 .back-link {
-  margin: 0 0 24px;
+  margin: 0 0 20px;
   font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.back-link a {
+  color: inherit;
 }
 
 .post-page-title {
-  margin: 0 0 8px;
-  font-size: clamp(1.9rem, 6.5vw, 2.8rem);
-  font-weight: 800;
-  line-height: 1.4;
+  margin: 0 0 14px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 .post-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 20px;
+  align-items: baseline;
+  gap: 8px 18px;
   margin: 0 0 8px;
   color: var(--muted);
   font-size: 0.9rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 
-.post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.post-page .post-tags {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.post-tags li {
-  padding: 1px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-weight: 400;
-  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .not-found {
-  padding: 64px 0;
-}
-
-.empty-posts {
-  color: var(--muted);
-}
-
-/* برچسب‌ها در کارت‌های صفحه‌ی اصلی */
-.post .post-tags {
-  margin: 4px 0 0;
+  padding: 56px 0;
+  text-align: center;
 }
 
 /* ── تایپوگرافی محتوای مارک‌داون ── */
@@ -306,47 +345,67 @@ p.site-title a {
 .post-content h4,
 .post-content h5,
 .post-content h6 {
-  margin: 36px 0 8px;
+  font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.5;
+  color: var(--ink);
+  margin: 44px 0 12px;
 }
 
 .post-content h2 {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
 }
 
 .post-content h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 
 .post-content h4 {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+}
+
+.post-content > :first-child {
+  margin-top: 0;
+}
+
+.post-content > :last-child {
+  margin-bottom: 0;
 }
 
 .post-content p {
-  margin: 12px 0;
+  margin: 16px 0;
 }
 
 .post-content ul,
 .post-content ol {
-  margin: 12px 0;
-  padding-inline-start: 1.7em;
+  margin: 16px 0;
+  padding-inline-start: 2em;
 }
 
 .post-content li {
-  margin: 4px 0;
+  margin: 6px 0;
 }
 
 .post-content a {
   text-decoration: underline;
   text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  color: var(--accent);
+}
+
+.post-content a:hover {
+  color: var(--accent-hover);
 }
 
 .post-content blockquote {
-  margin: 20px 0;
-  padding: 4px 20px;
-  border-inline-start: 4px solid var(--mark);
+  margin: 24px 0;
+  padding: 12px 20px;
+  border-inline-start: 4px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius) var(--radius) 0;
   color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
 .post-content blockquote p {
@@ -357,60 +416,71 @@ p.site-title a {
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 24px auto;
+  margin: 28px auto;
   border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 
 .post-content hr {
-  margin: 36px 0;
+  margin: 40px 0;
   border: 0;
   border-top: 1px solid var(--line);
 }
 
 .post-content table {
   width: 100%;
-  margin: 20px 0;
+  margin: 24px 0;
   border-collapse: collapse;
   font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
 }
 
 .post-content th,
 .post-content td {
-  padding: 8px 12px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   text-align: start;
 }
 
 .post-content th {
+  background: var(--surface);
   font-weight: 700;
+  color: var(--ink);
 }
 
 /* ── کد: درون‌خطی و بلوک (همیشه چپ‌به‌راست) ── */
 
 .post-content code {
-  font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 .post-content :not(pre) > code {
-  padding: 2px 7px;
-  border: 1px solid var(--line);
-  background: var(--code-bg);
-  font-size: 0.85em;
   direction: ltr;
   unicode-bidi: isolate;
+  font-size: 0.85em;
+  padding: 1px 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
 }
 
 .post-content pre {
   position: relative;
-  margin: 24px 0;
-  padding: 16px 20px;
+  margin: 26px 0;
+  padding: 18px 22px;
   border: 1px solid var(--line);
-  background: var(--code-bg);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
   direction: ltr;
   text-align: left;
   overflow-x: auto;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
-  line-height: 1.9;
+  line-height: 1.75;
+  color: var(--ink);
 }
 
 .post-content pre code {
@@ -421,11 +491,11 @@ p.site-title a {
   font-size: 1em;
 }
 
-/* ── برجسته‌سازی کد (highlight.js) با رنگ‌های هماهنگ با پالت سایت ── */
+/* برجسته‌سازی کد (highlight.js) — رنگ‌های هماهنگ با پالت سایت */
 
 .hljs-comment,
 .hljs-quote {
-  color: var(--muted);
+  color: var(--hl-comment);
   font-style: italic;
 }
 
@@ -454,7 +524,7 @@ p.site-title a {
 
 .hljs-number,
 .hljs-bullet {
-  color: var(--hl-string);
+  color: var(--hl-number);
 }
 
 .hljs-deletion {
@@ -473,21 +543,84 @@ p.site-title a {
 
 .copy-btn {
   position: absolute;
-  top: 10px;
-  inset-inline-end: 10px;
-  padding: 2px 12px;
+  top: 12px;
+  inset-inline-end: 12px;
   border: 1px solid var(--line);
   background: var(--bg);
   color: var(--muted);
+  padding: 4px 10px;
   font-family: inherit;
   font-size: 0.8rem;
-  line-height: 1.8;
+  line-height: 1.6;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0;
+}
+
+.post-content pre:hover .copy-btn {
+  opacity: 1;
 }
 
 .copy-btn:hover,
 .copy-btn:focus-visible {
-  opacity: 1;
+  border-color: var(--accent);
   color: var(--accent);
+  opacity: 1;
+}
+
+/* ── پاسخ‌گویی ── */
+
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    width: min(100% - 28px, 760px);
+  }
+
+  .site-header {
+    padding-top: 32px;
+  }
+
+  .site-nav {
+    padding: 16px 0;
+    gap: 12px;
+  }
+
+  .section-title {
+    margin-top: 44px;
+    font-size: 1.2rem;
+  }
+
+  .post {
+    padding: 20px 0;
+  }
+
+  .post-title {
+    font-size: 1.2rem;
+  }
+
+  .post-page-title {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+  }
+
+  .post-meta {
+    gap: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .post-content blockquote {
+    padding: 10px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,11 +1,64 @@
 /**
  * بهبودهای کوچک سمت مرورگر (بدون وابستگی):
- * افزودن دکمه‌ی «کپی» روی بلوک‌های کد.
+ * - toggling حالت نمایش (روشن / تاریک) با ذخیره‌ی ترجیح در localStorage
+ * - افزودن دکمه‌ی «کپی» روی بلوک‌های کد.
  * بقیه‌ی سایت (حالت تاریک، کارت‌های بازشو و…) بدون جاوااسکریپت هم کار می‌کند.
  */
 
 (function () {
   'use strict';
+
+  const THEME_KEY = 'blog-theme';
+  var html = document.documentElement;
+  var toggle = document.getElementById('theme-toggle');
+
+  function isDark() {
+    return html.hasAttribute('data-theme');
+  }
+
+  function setTheme(dark) {
+    if (dark) {
+      html.setAttribute('data-theme', 'dark');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+
+    if (toggle) {
+      toggle.textContent = dark ? 'روشن' : 'تاریک';
+      toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    }
+
+    try {
+      localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+    } catch (e) {
+      /* localStorage ممکن در حالتهای خصوصی یا مرورگرهای محدود در دسترس نباشد. */
+    }
+  }
+
+  function initTheme() {
+    var saved;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) { saved = null; }
+
+    var dark;
+    if (saved) {
+      dark = saved === 'dark';
+    } else {
+      dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    setTheme(dark);
+  }
+
+  function toggleTheme() {
+    setTheme(!isDark());
+  }
+
+  initTheme();
+
+  if (toggle) {
+    toggle.addEventListener('click', toggleTheme);
+  }
+
+  /* ── دکمه‌ی کپی بلوک‌های کد (حفظ‌شده از نسخه قبل) ── */
 
   function markCopied(button) {
     button.textContent = 'کپی شد';
