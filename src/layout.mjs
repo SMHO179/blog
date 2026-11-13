@@ -54,7 +54,7 @@ ${extraHeadHtml}</head>
 
     <header class="site-header">
       <div class="site-brand">
-        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+        <img class="brand-logo" src="/images/logo.png" alt="" aria-hidden="true" width="34" height="34">
         ${siteTitle}
         <span class="brand-note">نوشته‌ها · کد</span>
       </div>

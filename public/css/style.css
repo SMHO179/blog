@@ -185,18 +185,12 @@ svg {
   gap: 12px;
 }
 
-.brand-mark {
+.brand-logo {
   width: 34px;
   height: 34px;
-  display: grid;
-  place-items: center;
-  color: #0e1410;
-  background: var(--accent);
+  flex-shrink: 0;
   border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 700;
-  direction: ltr;
+  object-fit: cover;
 }
 
 .site-title {
