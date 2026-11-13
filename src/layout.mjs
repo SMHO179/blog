@@ -57,6 +57,22 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="theme-color" content="#f7f3ea">
+  <script>
+    (() => {
+      document.documentElement.classList.add('js');
+
+      try {
+        const stored = localStorage.getItem('theme');
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const theme = stored === 'dark' || stored === 'light' ? stored : system;
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]')
+          .setAttribute('content', theme === 'dark' ? '#12140f' : '#f7f3ea');
+      } catch {
+        /* Keep the light default. */
+      }
+    })();
+  </script>
 
   <link rel="preload" href="/fonts/AradVF.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,11 +95,23 @@ ${extraHeadHtml}</head>
         </span>
       </a>
 
-      <nav class="nav" aria-label="ناوبری اصلی">
-        <a href="${navPrefix}#posts">نوشته‌ها</a>
-        <a href="${navPrefix}#about">درباره</a>
-        <a href="#contact">ارتباط</a>
-      </nav>
+      <div class="masthead__tools">
+        <nav class="nav" aria-label="ناوبری اصلی">
+          <a href="${navPrefix}#posts">نوشته‌ها</a>
+          <a href="${navPrefix}#about">درباره</a>
+          <a href="#contact">ارتباط</a>
+        </nav>
+
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="فعال کردن حالت تاریک" title="فعال کردن حالت تاریک">
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6 8.5 8.5 0 1 0 20.4 14.2Z"/>
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <path d="M12 2.4v2.2M12 19.4v2.2M2.4 12h2.2M19.4 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 

@@ -15,6 +15,82 @@
 
   const RESET_DELAY = 1800;
 
+  const THEME = {
+    key: 'theme',
+    colors: {
+      light: '#f7f3ea',
+      dark: '#12140f',
+    },
+  };
+
+  function currentTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  }
+
+  /**
+   * Apply a theme, update the browser chrome color and button labels.
+   */
+  function applyTheme(theme, persist) {
+    const isDark = theme === 'dark';
+
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute('content', isDark ? THEME.colors.dark : THEME.colors.light);
+    }
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      const label = isDark ? 'فعال کردن حالت روشن' : 'فعال کردن حالت تاریک';
+
+      button.setAttribute('aria-label', label);
+      button.setAttribute('title', label);
+    });
+
+    if (persist) {
+      try {
+        localStorage.setItem(THEME.key, theme);
+      } catch {
+        /* The theme still applies for this page view. */
+      }
+    }
+  }
+
+  /**
+   * Wire up the theme switch and follow the system preference when the
+   * visitor has not chosen a theme explicitly.
+   */
+  function initializeTheme() {
+    applyTheme(currentTheme(), false);
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark', true);
+      });
+    });
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const syncWithSystem = (event) => {
+      let stored = null;
+
+      try {
+        stored = localStorage.getItem(THEME.key);
+      } catch {
+        /* Ignore unavailable storage. */
+      }
+
+      if (!stored) {
+        applyTheme(event.matches ? 'dark' : 'light', false);
+      }
+    };
+
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', syncWithSystem);
+    } else if (typeof media.addListener === 'function') {
+      media.addListener(syncWithSystem);
+    }
+  }
+
   /**
    * Update button state and accessible label.
    */
@@ -155,6 +231,7 @@
    * Initialize application.
    */
   function init() {
+    initializeTheme();
     initializeCodeBlocks();
   }
 
