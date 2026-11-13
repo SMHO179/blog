@@ -40,6 +40,16 @@ export function layout({
   const extraHeadHtml = extraHead ? `${extraHead}\n` : '';
   const year = toPersianDigits(toJalali(new Date()).jy);
 
+  const social = site.social || {};
+  const github = typeof social.github === 'string' ? social.github.trim() : '';
+  const mastodon = typeof social.mastodon === 'string' ? social.mastodon.trim() : '';
+  const donate = typeof social.donate === 'string' ? social.donate.trim() : '';
+
+  const socialLinks = [
+    github ? `<li><a href="${escapeHtml(github)}" rel="me">GitHub</a></li>` : '',
+    mastodon ? `<li><a href="${escapeHtml(mastodon)}" rel="me">ماستودون</a></li>` : '',
+  ].filter(Boolean).join('');
+
   return `<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -57,6 +67,8 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="theme-color" content="#f7f3ea">
+  <link rel="icon" href="/images/logo.png" type="image/png" sizes="460x460">
+  <link rel="apple-touch-icon" href="/images/logo.png">
   <script>
     (() => {
       document.documentElement.classList.add('js');
@@ -124,6 +136,7 @@ ${content}
       <div class="footer__brand">
         <p class="footer__name">${escapeHtml(site.title)}</p>
         <p class="footer__desc">${escapeHtml(site.description)}</p>
+        ${socialLinks ? `<ul class="footer__social" aria-label="پیوندهای بیرونی">${socialLinks}</ul>` : ''}
       </div>
 
       <nav class="footer__col" aria-label="پیوندهای پانوشت">
@@ -139,6 +152,7 @@ ${content}
         <p class="footer__label">ارتباط</p>
         <a class="footer__email" href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a>
         <p class="footer__note">برای گفت‌وگو، پیشنهاد یا اصلاح نوشته‌ها بنویسید.</p>
+        ${donate ? `<a class="footer__donate" href="${escapeHtml(donate)}">حمایت مالی <span aria-hidden="true">←</span></a>` : ''}
       </div>
     </div>
 

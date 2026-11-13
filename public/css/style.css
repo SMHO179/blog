@@ -645,6 +645,37 @@ button {
   line-height: 1.95;
 }
 
+.footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__social li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer__social li + li::before {
+  content: "·";
+  margin-inline: 0.6rem;
+  color: var(--rule-strong);
+}
+
+.footer__social a {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.9;
+}
+
+.footer__social a:hover {
+  color: var(--forest);
+}
+
 .footer__label {
   margin: 0 0 1rem;
   color: var(--forest);
@@ -695,6 +726,31 @@ button {
   color: var(--muted);
   font-size: 0.8125rem;
   line-height: 1.9;
+}
+
+.footer__donate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  padding-bottom: 0.1rem;
+  color: var(--forest);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.8;
+  border-bottom: 1px solid var(--forest-line);
+}
+
+.footer__donate:hover {
+  border-color: var(--forest);
+}
+
+.footer__donate span {
+  transition: transform 180ms ease;
+}
+
+.footer__donate:hover span {
+  transform: translateX(-3px);
 }
 
 .footer__base {
