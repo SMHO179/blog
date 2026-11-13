@@ -39,5 +39,20 @@ marked.use({
 });
 
 export function renderMarkdown(source) {
-  return marked.parse(source);
+  let html = marked.parse(source);
+
+  // Keep article heading levels semantic: the post title is the page h1, so
+  // content must start at h2. Some posts are written with ### only.
+  if (!/<h2[\s>]/.test(html) && /<h3[\s>]/.test(html)) {
+    html = html.replace(/<(\/?)h([3-6])([\s>])/g, (match, closing, level, rest) => (
+      `<${closing}h${Number(level) - 1}${rest}`
+    ));
+  }
+
+  // Tables need a scroll container on narrow screens.
+  html = html
+    .replace(/<table>/g, '<div class="table-scroll"><table>')
+    .replace(/<\/table>/g, '</table></div>');
+
+  return html;
 }
