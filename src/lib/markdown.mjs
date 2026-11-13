@@ -21,7 +21,13 @@ marked.use({
       }
 
       const cls = known ? `hljs language-${escapeHtml(lang)}` : 'hljs';
-      return `<pre dir="ltr"><code class="${cls}">${body}</code></pre>\n`;
+      const label = lang || 'text';
+      return `<div class="code-block" dir="ltr">
+  <div class="code-toolbar">
+    <span class="code-lang">${escapeHtml(label)}</span>
+  </div>
+  <div class="code-body"><pre><code class="${cls}">${body}</code></pre></div>
+</div>\n`;
     },
 
     image(token) {

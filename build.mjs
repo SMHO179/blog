@@ -122,10 +122,15 @@ async function build() {
   await cp(PUBLIC_DIR, DIST_DIR, { recursive: true });
   await mkdir(path.join(DIST_DIR, 'posts'), { recursive: true });
 
-  for (const post of posts) {
+  for (let i = 0; i < posts.length; i += 1) {
+    const post = posts[i];
     const postDir = path.join(DIST_DIR, 'posts', post.slug);
     await mkdir(postDir, { recursive: true });
-    await writeFile(path.join(postDir, 'index.html'), renderPost({ site, post, siteUrl }), 'utf8');
+    await writeFile(
+      path.join(postDir, 'index.html'),
+      renderPost({ site, post, siteUrl, prev: posts[i + 1], next: posts[i - 1] }),
+      'utf8',
+    );
   }
 
   await writeFile(path.join(DIST_DIR, 'index.html'), renderHome({ site, posts, siteUrl }), 'utf8');

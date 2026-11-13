@@ -12,14 +12,15 @@ export function layout({
   content,
 }) {
   const siteTitle = isHome
-    ? `      <h1 class="site-title">${escapeHtml(site.title)}</h1>`
-    : `      <p class="site-title"><a href="/">${escapeHtml(site.title)}</a></p>`;
+    ? `<h1 class="site-title">${escapeHtml(site.title)}</h1>`
+    : `<p class="site-title"><a href="/">${escapeHtml(site.title)}</a></p>`;
 
-  
   const navPrefix = isHome ? '' : '/';
   const canonicalTags = canonical
     ? `  <link rel="canonical" href="${escapeHtml(canonical)}">\n  <meta property="og:url" content="${escapeHtml(canonical)}">\n`
     : '';
+
+  const extraHeadHtml = extraHead ? `${extraHead}\n` : '';
 
   return `<!DOCTYPE html>
 <html lang="fa" dir="rtl" data-theme="dark">
@@ -28,10 +29,7 @@ export function layout({
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>${escapeHtml(pageTitle)}</title>
-  <meta
-    name="description"
-    content="${escapeHtml(description)}"
-  >
+  <meta name="description" content="${escapeHtml(description)}">
 ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta property="og:site_name" content="${escapeHtml(site.title)}">
   <meta property="og:title" content="${escapeHtml(pageTitle)}">
@@ -44,45 +42,58 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/main.js" defer></script>
-${extraHead ? `${extraHead}\n` : ''}</head>
+${extraHeadHtml}</head>
 
 <body>
+  <a class="skip-link" href="#main-content">گزیردن به محتوای اصلی</a>
+
   <div class="container">
 
     <header class="site-header">
-${siteTitle}
+      <div class="site-brand">
+        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+        ${siteTitle}
+        <span class="brand-note">نوشته‌ها · کد</span>
+      </div>
 
-      <p class="site-description">
-        ${escapeHtml(site.description)}
-      </p>
+      <nav class="site-nav" aria-label="منوی اصلی">
+        <a href="${navPrefix}#posts">نوشته‌ها</a>
+        <a href="${navPrefix}#about">درباره‌ی من</a>
+        <a href="${navPrefix}#contact">تماس</a>
+      </nav>
     </header>
 
-    <nav class="site-nav" aria-label="منوی اصلی">
-      <a href="${navPrefix}#posts">نوشته‌ها</a>
-      <a href="${navPrefix}#about">درباره‌ی من</a>
-      <a href="${navPrefix}#contact">تماس</a>
-    </nav>
-
-    <main>
+    <main id="main-content" role="main">
 ${content}
     </main>
 
     <footer id="contact" class="site-footer">
-      <h2 class="section-title">ارتباط</h2>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          ${siteTitle}
+          <span class="footer-note">وبلاگ استاتیک فارسی · مارک‌داون · Node.js</span>
+        </div>
 
-      <p>
-        برای گفتگو می‌توانید به نشانی
-        <a class="email" href="mailto:${escapeHtml(site.email)}">
-          ${escapeHtml(site.email)}
-        </a>
-        ایمیل بزنید.
-      </p>
+        <div class="footer-contact">
+          <span class="footer-label">تماس</span>
+          <a class="footer-email" href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a>
+        </div>
+
+        <nav class="footer-nav">
+          <a href="/">صفحه‌ی اصلی</a>
+          <a href="#posts">نوشته‌ها</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-credit">
+          ساخته‌شده با <span class="tech">Node.js</span> و <span class="tech">Markdown</span> ·
+          ${site.title}
+        </p>
+      </div>
     </footer>
 
   </div>
@@ -91,37 +102,53 @@ ${content}
 `;
 }
 
-function tagsMarkup(post) {
-  if (!post.tags.length) {
-    return '';
-  }
-  const items = post.tags.map((tag) => `        <li>#${escapeHtml(tag)}</li>`).join('\n');
-  return `\n        <ul class="post-tags" aria-label="برچسب‌های نوشته">\n${items}\n        </ul>`;
-}
-
 export function renderHome({ site, posts, siteUrl }) {
+  const readingTime = (text) => Math.max(1, Math.round(text.length / 400));
+  const latest = posts[0] || null;
+
+  const latestBlock = latest
+    ? `
+    <div class="feature-card">
+      <span class="feature-label">آخرین نوشته</span>
+      <h3 class="feature-title"><a href="/posts/${latest.slugUri}/">${escapeHtml(latest.title)}</a></h3>
+      <p class="feature-description">${escapeHtml(latest.description || '')}</p>
+      <div class="feature-meta">
+        <time>${formatJalaliDate(latest.date)}</time>
+        <span class="sep">·</span>
+        <span class="tech">${readingTime(latest.description || latest.title)} دقیقه‌ی خواندن</span>
+      </div>
+    </div>`
+    : '';
+
   let postsSection;
 
   if (!posts.length) {
-    postsSection = `      <p class="empty-posts">هنوز نوشته‌ای منتشر نشده است.</p>`;
+    postsSection = `
+      <p class="empty-state">هنوز نوشته‌ای منتشر نشده است.</p>`;
   } else {
-    const cards = posts.map((post) => {
+    const rows = posts.map((post, index) => {
+      const number = String(index + 1).padStart(2, '0');
       const description = post.description
-        ? `\n          <p>${escapeHtml(post.description)}</p>`
+        ? `\n        <p class="post-excerpt">${escapeHtml(post.description)}</p>`
         : '';
 
-      return `      <details class="post">
-        <summary class="post-title">${escapeHtml(post.title)}
-          <span class="post-date"><time datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time></span>
-        </summary>
+      return `      <article class="post-list-item">
+        <a class="post-link" href="/posts/${post.slugUri}/">
+          <span class="post-number">${number}</span>
+          <div class="post-info">
+            <h3 class="post-list-title">${escapeHtml(post.title)}</h3>
+            <div class="post-list-meta">
+              <time datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time>
+              ${post.tags.length ? `<span class="sep">·</span> ${post.tags.length} برچسب` : ''}
+            </div>
+          </div>
+        </a>
+        ${description}
+        <ul class="post-tags" aria-label="برچسب‌های نوشته">${post.tags.map((tag) => `<li><span class="post-tag">#${escapeHtml(tag)}</span></li>`).join('')}</ul>
+      </article>`;
+    }).join('\n');
 
-        <div class="post-content">${description}${tagsMarkup(post)}
-          <p><a href="/posts/${post.slugUri}/">ادامه‌ی مطلب…</a></p>
-        </div>
-      </details>`;
-    }).join('\n\n');
-
-    postsSection = cards;
+    postsSection = rows;
   }
 
   return layout({
@@ -131,26 +158,61 @@ export function renderHome({ site, posts, siteUrl }) {
     canonical: `${siteUrl}/`,
     ogType: 'website',
     isHome: true,
-    content: `      <section id="posts" aria-labelledby="posts-title">
-        <h2 id="posts-title" class="section-title">آخرین نوشته‌ها</h2>
+    content: `
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-intro">
+          <p class="hero-label">
+            <span class="dot" aria-hidden="true"></span>
+            وبلاگ
+          </p>
+          <h1 id="hero-title" class="hero-title">${escapeHtml(site.title)}</h1>
+          <p class="hero-description">${escapeHtml(site.description)}</p>
+          <div class="hero-actions">
+            <a href="#posts" class="hero-button primary">خواندن نوشته‌ها</a>
+            <a href="#about" class="hero-button secondary">درباره‌ی من</a>
+          </div>
+        </div>
+        ${latestBlock ? `<aside class="feature-panel">${latestBlock}</aside>` : ''}
+      </section>
+
+      <section id="posts" aria-labelledby="posts-title">
+        <div class="section-group">
+          <h2 id="posts-title" class="section-title">آخرین نوشته‌ها</h2>
+          <p class="section-note">${posts.length} نوشته</p>
+        </div>
 
 ${postsSection}
       </section>
 
       <section id="about" aria-labelledby="about-title">
-        <h2 id="about-title" class="section-title">درباره‌ی من</h2>
-
-        <p>
-          به نرم‌افزارهای آزاد و توسعه‌ی پروژه‌های متن‌باز علاقه‌مندم.
-        </p>
+        <div class="about-block">
+          <h2 id="about-title" class="section-title">درباره‌ی من</h2>
+          <p class="about-text">
+            به نرم‌افزارهای آزاد و توسعه‌ی پروژه‌های متن‌باز علاقه‌مندم.
+            این وبلاگ، یادداشت‌هایی از مسیر یادگیری است.
+          </p>
+        </div>
       </section>`,
   });
 }
 
-export function renderPost({ site, post, siteUrl }) {
+function postTagsMarkup(posts) {
+  const tagCounts = {};
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    }
+  }
+  const entries = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'fa'));
+  if (!entries.length) return '';
+  const items = entries.map(([tag]) => `<span class="cloud-tag">${escapeHtml(tag)}</span>`).join(' ');
+  return `<div class="tag-cloud" aria-label="برچسب‌ها">${items}</div>`;
+}
+
+export function renderPost({ site, post, siteUrl, prev, next }) {
   const url = `${siteUrl}/posts/${post.slugUri}/`;
   const description = post.description || excerptFromHtml(post.html);
-  const tags = tagsMarkup(post);
+  const readingTime = Math.max(1, Math.round(post.html.length / 400));
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -160,11 +222,31 @@ export function renderPost({ site, post, siteUrl }) {
     datePublished: toIsoDate(post.date),
     inLanguage: 'fa-IR',
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    publisher: {
+      '@type': 'Organization',
+      name: site.title,
+    },
   };
 
   const extraHead = [
     `  <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`,
-  ].join('\n');
+    post.tags.length ? `  <meta property="article:tag" content="${post.tags.join(', ')}">` : '',
+  ].filter(Boolean).join('\n');
+
+  const prevLink = prev
+    ? `<a class="nav-link nav-prev" href="/posts/${prev.slugUri}/"><span class="nav-dir">قبلی</span> ${escapeHtml(prev.title)}</a>`
+    : '';
+  const nextLink = next
+    ? `<a class="nav-link nav-next" href="/posts/${next.slugUri}/"><span class="nav-dir">بعدی</span> ${escapeHtml(next.title)}</a>`
+    : '';
+  const paginationMarkup = prevLink || nextLink
+    ? `<nav class="article-pagination" aria-label="نوشته قبلی و بعدی">
+        <div class="pagination-inner">
+          ${prevLink}
+          ${nextLink}
+        </div>
+      </nav>`
+    : '';
 
   return layout({
     site,
@@ -175,19 +257,23 @@ export function renderPost({ site, post, siteUrl }) {
     isHome: false,
     extraHead,
     content: `      <article class="post-page" aria-labelledby="post-title">
-        <p class="back-link"><a href="/">→ همه‌ی نوشته‌ها</a></p>
+        <p class="back-link"><a href="/">← همه‌ی نوشته‌ها</a></p>
 
-        <header class="post-header">
-          <h1 id="post-title" class="post-page-title">${escapeHtml(post.title)}</h1>
-
-          <div class="post-meta">
-            <time datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time>${tags}
+        <header class="article-header">
+          <div class="article-kicker">
+            <time class="article-date" datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time>
+            <span class="article-reading">${readingTime} دقیقه</span>
           </div>
+          <h1 id="post-title" class="article-title">${escapeHtml(post.title)}</h1>
+          <p class="article-description">${description}</p>
+          <ul class="post-tags" aria-label="برچسب‌های نوشته">${post.tags.map((tag) => `<li><span class="post-tag">#${escapeHtml(tag)}</span></li>`).join('')}</ul>
         </header>
 
-        <div class="post-content">
+        <div class="article-content">
 ${post.html}
         </div>
+
+        ${paginationMarkup}
       </article>`,
   });
 }

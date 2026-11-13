@@ -2,14 +2,13 @@
   'use strict';
 
   const SELECTORS = {
-    codeBlocks: '.post-content pre',
-    code: 'code',
-    button: '.copy-btn',
+    codeBlocks: '.code-block',
+    button: '.copy-button',
   };
 
   const LABELS = {
     idle: 'کپی',
-    copying: 'در حال کپی...',
+    copying: 'در حال کپی…',
     success: 'کپی شد!',
     error: 'خطا در کپی!',
   };
@@ -17,13 +16,14 @@
   const RESET_DELAY = 1800;
 
   /**
-   * Update button state.
+   * Update button state and accessible label.
    */
   function updateButton(button, state) {
     clearTimeout(button.resetTimer);
 
     button.dataset.state = state;
     button.textContent = LABELS[state];
+    button.setAttribute('aria-label', state === 'idle' ? 'کپی کد' : LABELS[state]);
     button.disabled = state === 'copying';
 
     if (state !== 'copying') {
@@ -78,10 +78,18 @@
   }
 
   /**
-   * Copy code content.
+   * Copy code content from the nearest .code-block.
    */
-  async function copyCode(button, code) {
+  async function copyCode(button) {
     if (button.disabled) return;
+
+    const block = button.closest(SELECTORS.codeBlocks);
+    const code = block?.querySelector('code');
+
+    if (!code) {
+      updateButton(button, 'error');
+      return;
+    }
 
     const text = code.textContent.replace(/\n$/, '');
 
@@ -107,23 +115,28 @@
   }
 
   /**
-   * Create copy buttons for code blocks.
+   * Create copy buttons for code blocks that do not already have one.
    */
   function initializeCodeBlocks() {
-    document.querySelectorAll(SELECTORS.codeBlocks).forEach((pre) => {
-      if (!pre.querySelector(SELECTORS.code)) return;
-      if (pre.querySelector(SELECTORS.button)) return;
+    document.querySelectorAll(SELECTORS.codeBlocks).forEach((block) => {
+      if (!block.querySelector('code')) return;
+      if (block.querySelector(SELECTORS.button)) return;
 
       const button = document.createElement('button');
 
       button.type = 'button';
-      button.className = 'copy-btn';
+      button.className = 'copy-button';
       button.textContent = LABELS.idle;
       button.dataset.state = 'idle';
       button.setAttribute('aria-label', 'کپی کد');
       button.setAttribute('aria-live', 'polite');
 
-      pre.appendChild(button);
+      const toolbar = block.querySelector('.code-toolbar');
+      if (toolbar) {
+        toolbar.appendChild(button);
+      } else {
+        block.insertBefore(button, block.firstChild);
+      }
     });
   }
 
@@ -135,12 +148,7 @@
 
     if (!button || button.disabled) return;
 
-    const pre = button.closest('pre');
-    const code = pre?.querySelector(SELECTORS.code);
-
-    if (code) {
-      copyCode(button, code);
-    }
+    copyCode(button);
   });
 
   /**
