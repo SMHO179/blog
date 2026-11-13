@@ -38,7 +38,7 @@ ${canonicalTags}  <meta property="og:type" content="${ogType}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="theme-color" content="#121416">
+  <meta name="theme-color" content="#0f1113">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,7 +54,7 @@ ${extraHeadHtml}</head>
 
     <header class="site-header">
       <div class="site-brand">
-        <img class="brand-logo" src="/images/logo.png" alt="" aria-hidden="true" width="34" height="34">
+        <img class="brand-logo" src="/images/logo.png" alt="" aria-hidden="true" width="32" height="32">
         ${siteTitle}
         <span class="brand-note">نوشته‌ها · کد</span>
       </div>
@@ -108,14 +108,14 @@ export function renderHome({ site, posts, siteUrl }) {
 
   const latestBlock = latest
     ? `
-    <div class="feature-card">
-      <span class="feature-label">آخرین نوشته</span>
-      <h3 class="feature-title"><a href="/posts/${latest.slugUri}/">${escapeHtml(latest.title)}</a></h3>
+    <div class="feature">
+      <p class="feature-label">آخرین نوشته</p>
+      <h2 class="feature-title"><a href="/posts/${latest.slugUri}/">${escapeHtml(latest.title)}</a></h2>
       <p class="feature-description">${escapeHtml(latest.description || '')}</p>
       <div class="feature-meta">
         <time>${formatJalaliDate(latest.date)}</time>
         <span class="sep">·</span>
-        <span class="tech">${readingTime(latest.description || latest.title)} دقیقه‌ی خواندن</span>
+        <span class="tech">${readingTime(latest.description || latest.title)} دقیقه</span>
       </div>
     </div>`
     : '';
@@ -132,12 +132,12 @@ export function renderHome({ site, posts, siteUrl }) {
         ? `\n        <p class="post-excerpt">${escapeHtml(post.description)}</p>`
         : '';
 
-      return `      <article class="post-list-item">
+      return `      <article class="post-item">
         <a class="post-link" href="/posts/${post.slugUri}/">
           <span class="post-number">${number}</span>
           <div class="post-info">
-            <h3 class="post-list-title">${escapeHtml(post.title)}</h3>
-            <div class="post-list-meta">
+            <h3 class="post-title">${escapeHtml(post.title)}</h3>
+            <div class="post-meta">
               <time datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time>
               ${post.tags.length ? `<span class="sep">·</span> ${post.tags.length} برچسب` : ''}
             </div>
@@ -161,31 +161,28 @@ export function renderHome({ site, posts, siteUrl }) {
     content: `
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-intro">
-          <p class="hero-label">
-            <span class="dot" aria-hidden="true"></span>
-            وبلاگ
-          </p>
+          <p class="hero-kicker">وبلاگ</p>
           <h1 id="hero-title" class="hero-title">${escapeHtml(site.title)}</h1>
           <p class="hero-description">${escapeHtml(site.description)}</p>
           <div class="hero-actions">
-            <a href="#posts" class="hero-button primary">خواندن نوشته‌ها</a>
-            <a href="#about" class="hero-button secondary">درباره‌ی من</a>
+            <a href="#posts" class="hero-link primary">خواندن نوشته‌ها</a>
+            <a href="#about" class="hero-link secondary">درباره‌ی من</a>
           </div>
         </div>
-        ${latestBlock ? `<aside class="feature-panel">${latestBlock}</aside>` : ''}
+        ${latestBlock ? `<aside class="feature-sidebar">${latestBlock}</aside>` : ''}
       </section>
 
       <section id="posts" aria-labelledby="posts-title">
-        <div class="section-group">
+        <div class="section-header">
           <h2 id="posts-title" class="section-title">آخرین نوشته‌ها</h2>
-          <p class="section-note">${posts.length} نوشته</p>
+          <p class="section-count">${posts.length} نوشته</p>
         </div>
 
 ${postsSection}
       </section>
 
       <section id="about" aria-labelledby="about-title">
-        <div class="about-block">
+        <div class="about">
           <h2 id="about-title" class="section-title">درباره‌ی من</h2>
           <p class="about-text">
             به نرم‌افزارهای آزاد و توسعه‌ی پروژه‌های متن‌باز علاقه‌مندم.
@@ -194,19 +191,6 @@ ${postsSection}
         </div>
       </section>`,
   });
-}
-
-function postTagsMarkup(posts) {
-  const tagCounts = {};
-  for (const post of posts) {
-    for (const tag of post.tags) {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-    }
-  }
-  const entries = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'fa'));
-  if (!entries.length) return '';
-  const items = entries.map(([tag]) => `<span class="cloud-tag">${escapeHtml(tag)}</span>`).join(' ');
-  return `<div class="tag-cloud" aria-label="برچسب‌ها">${items}</div>`;
 }
 
 export function renderPost({ site, post, siteUrl, prev, next }) {
@@ -260,7 +244,7 @@ export function renderPost({ site, post, siteUrl, prev, next }) {
         <p class="back-link"><a href="/">← همه‌ی نوشته‌ها</a></p>
 
         <header class="article-header">
-          <div class="article-kicker">
+          <div class="article-meta-top">
             <time class="article-date" datetime="${toIsoDate(post.date)}">${formatJalaliDate(post.date)}</time>
             <span class="article-reading">${readingTime} دقیقه</span>
           </div>
@@ -286,13 +270,13 @@ export function renderNotFound({ site }) {
     isHome: false,
     extraHead: '  <meta name="robots" content="noindex">',
     content: `      <section class="not-found" aria-labelledby="nf-title">
-        <h1 id="nf-title" class="post-page-title">صفحه پیدا نشد</h1>
+        <h1 id="nf-title" class="not-found-title">صفحه پیدا نشد</h1>
 
-        <p class="empty-posts">
+        <p class="not-found-description">
           خطای ۴۰۴ — نشانی‌ای که دنبالش بودید وجود ندارد یا جابه‌جا شده است.
         </p>
 
-        <p><a href="/">بازگشت به خانه</a></p>
+        <p><a href="/" class="not-found-link">بازگشت به خانه</a></p>
       </section>`,
   });
 }
