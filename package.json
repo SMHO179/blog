@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "description": "وبلاگ استاتیک فارسی با مارک‌داون",
+  "author": "SMohammad-Molanezhad (https://github.com/SMHO179)",
+  "license": "MIT",
   "engines": {
     "node": ">=20"
   },
