@@ -62,7 +62,7 @@ ${extraHeadHtml}</head>
       <nav class="site-nav" aria-label="منوی اصلی">
         <a href="${navPrefix}#posts">نوشته‌ها</a>
         <a href="${navPrefix}#about">درباره‌ی من</a>
-        <a href="${navPrefix}#contact">تماس</a>
+        <a href="${navPrefix}#contact">ارتباط</a>
       </nav>
     </header>
 
@@ -78,7 +78,7 @@ ${content}
         </div>
 
         <div class="footer-contact">
-          <span class="footer-label">تماس</span>
+          <span class="footer-label">ارتباط</span>
           <a class="footer-email" href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a>
         </div>
 
