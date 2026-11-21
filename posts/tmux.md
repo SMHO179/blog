@@ -1,7 +1,7 @@
 ---
 title: "tmux ترفندهای کاربردی "
 date: "2026-11-21"
-description: "---"
+description: "ترفندها و دستورات کاربردی tmux در لینوکس."
 tags:
   - Linux
   - tmux
